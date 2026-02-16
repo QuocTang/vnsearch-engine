@@ -25,5 +25,15 @@ export {
 // Services (nếu cần expose)
 export * from "./services/search.service";
 
+// Components
+export { SearchBar } from "./components/search-bar";
+export { SearchResults } from "./components/search-results";
+export { ArticleCard } from "./components/article-card";
+export { FilterBar } from "./components/filter-bar";
+export { ResultsHeader } from "./components/results-header";
+export { LoadingState } from "./components/loading-state";
+export { EmptyState } from "./components/empty-state";
+export { ErrorState } from "./components/error-state";
+
 // Hooks (sẽ export sau khi tạo)
 // export { useSearch } from "./hooks/use-search";
