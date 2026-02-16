@@ -1,125 +1,92 @@
-# CẤU TRÚC DỰ ÁN IRS API
+# Cấu trúc Dự án Backend (IRS API)
 
-## 📂 Cấu trúc thư mục dự kiến
+Dưới đây là cấu trúc thư mục và tệp tin của service `irs_api`, được tổ chức theo kiến trúc Clean Architecture/Modular để dễ dàng mở rộng và bảo trì.
 
 ```
 irs_api/
-│
-├── .python-version                    # Python 3.12
-├── .venv/                             # Virtual environment
-├── .env                               # Environment variables
-├── .env.example                       # Environment template
-├── .gitignore                         # Git ignore
-│
-├── pyproject.toml                     # Project config & dependencies
-├── uv.lock                            # Lock file
-├── README.md                          # Tài liệu yêu cầu kỹ thuật
-│
-├── main.py                            # Entry point chạy ứng dụng
-│
-├── app/                               # Main application
+├── app/                        # Source code chính của ứng dụng
 │   ├── __init__.py
-│   │
-│   ├── api/                           # API endpoints
+│   ├── api/                    # Chứa các Controller/Route Handlers
 │   │   ├── __init__.py
-│   │   └── v1/
+│   │   └── v1/                 # API Version 1
 │   │       ├── __init__.py
-│   │       ├── health.py              # GET / - Health check
-│   │       ├── ingest.py              # POST /api/v1/ingest
-│   │       └── search.py              # POST /api/v1/search
-│   │
-│   ├── core/                          # Core config
+│   │       ├── dependencies.py # Các dependency injection (nếu có)
+│   │       ├── health.py       # API Health check
+│   │       ├── ingest.py       # API Trigger Ingestion
+│   │       └── search.py       # API Search
+│   ├── core/                   # Cấu hình cốt lõi của ứng dụng
 │   │   ├── __init__.py
-│   │   ├── config.py                  # Settings, ENV vars
-│   │   └── dependencies.py            # FastAPI dependencies
-│   │
-│   ├── models/                        # Pydantic models
+│   │   └── config.py           # Quản lý biến môi trường, cấu hình chung
+│   ├── models/                 # Chứa các Pydantic Models (Schemas)
 │   │   ├── __init__.py
-│   │   ├── request.py                 # Request schemas
-│   │   └── response.py                # Response schemas
-│   │
-│   ├── services/                      # Business logic
+│   │   ├── request.py          # Request Body schemas
+│   │   └── response.py         # Response Body schemas
+│   ├── services/               # Chứa Business Logic
 │   │   ├── __init__.py
-│   │   ├── nlp_processor.py           # NLP preprocessing
-│   │   ├── tfidf_service.py           # TF-IDF vectorization
-│   │   ├── qdrant_service.py          # Qdrant client operations
-│   │   └── ingestion_service.py       # Data ingestion pipeline
-│   │
-│   └── utils/                         # Utilities
+│   │   ├── ingestion_service.py # Logic nạp dữ liệu (ETL)
+│   │   ├── nlp_processor.py    # Logic xử lý NLP (Tiền xử lý)
+│   │   ├── qdrant_service.py   # Logic tương tác với Qdrant
+│   │   └── tfidf_service.py    # Logic Vectorization (TF-IDF)
+│   └── utils/                  # Các hàm tiện ích
 │       ├── __init__.py
-│       ├── excel_loader.py            # Load Excel files
-│       └── stopwords_loader.py        # Load stopwords
-│
-├── assets/                            # Data resources (hiện tại)
-│   ├── excel/
+│       ├── excel_loader.py     # Đọc file Excel
+│       └── stopwords_loader.py # Đọc file Stopwords
+├── assets/                     # Tài nguyên tĩnh (Dữ liệu đầu vào)
+│   ├── excel/                  # Chứa file Excel dữ liệu nguồn
 │   │   ├── articles.xlsx
 │   │   ├── categories.xlsx
 │   │   └── comments.xlsx
-│   └── txt/
+│   └── txt/                    # Chứa file text phụ trợ
 │       └── vietnamese-stopwords.txt
-│
-├── models/                            # Saved ML models
-│   └── tfidf_vectorizer.pkl           # Trained TF-IDF model
-│
-├── tests/                             # Unit tests
+├── docker/                     # Cấu hình Docker (nếu cần tách biệt)
+├── models/                     # Thư mục chứa Model đã huấn luyện (Artifacts)
+│   └── tfidf_vectorizer.pkl    # Model TF-IDF được serialize
+├── scripts/                    # Các script chạy rời (không qua API)
+│   └── initial_ingest.py       # Script chạy ingestion lần đầu
+├── tests/                      # Unit Tests
 │   ├── __init__.py
 │   ├── test_api/
-│   │   ├── test_health.py
-│   │   ├── test_ingest.py
-│   │   └── test_search.py
 │   ├── test_services/
-│   │   ├── test_nlp_processor.py
-│   │   └── test_tfidf_service.py
-│   └── conftest.py                    # Pytest fixtures
-│
-├── scripts/                           # Utility scripts
-│   └── initial_ingest.py              # Script nạp data lần đầu
-│
-└── docker/                            # Docker files
-    ├── Dockerfile                     # Docker image
-    └── .dockerignore
-
+│   └── test_utils/
+├── .dockerignore
+├── .gitignore
+├── Dockerfile                  # File build Docker image
+├── main.py                     # Entry point của ứng dụng (chạy Uvicorn)
+├── PROJECT_STRUCTURE.md        # Tài liệu cấu trúc dự án (File này)
+├── pyproject.toml              # Quản lý dependencies (Poetry/UV)
+├── README.md                   # Tài liệu hướng dẫn sử dụng
+└── uv.lock                     # File lock version của dependencies
 ```
 
-## 📝 Mô tả ngắn gọn
+## Mô tả chi tiết các thành phần
 
-### `app/api/v1/` - API Endpoints
+### 1. `app/` (Application Core)
+Đây là nơi chứa toàn bộ logic của ứng dụng.
 
-- **health.py**: Kiểm tra kết nối hệ thống
-- **ingest.py**: Nạp dữ liệu từ Excel vào Qdrant
-- **search.py**: API tìm kiếm chính
+- **`api/`**: Nơi định nghĩa các endpoint. `v1/` giúp quản lý phiên bản API.
+  - `health.py`: Kiểm tra trạng thái service và kết nối Qdrant.
+  - `ingest.py`: Endpoint để admin kích hoạt quá trình nạp dữ liệu.
+  - `search.py`: Endpoint chính phục vụ tìm kiếm.
+- **`core/`**: Chứa `config.py` để load các biến môi trường (như Qdrant URL, Database path) bằng `pydantic-settings`, giúp code không bị hardcode.
+- **`models/`**: Định nghĩa dữ liệu đầu vào/đầu ra (DTO) bằng Pydantic. Giúp validate dữ liệu tự động.
+- **`services/`**: Tách biệt logic nghiệp vụ khỏi Controller (API).
+  - `nlp_processor.py`: Chứa hàm `preprocess_text` (clean, tokenize, remove stopwords).
+  - `tfidf_service.py`: Quản lý việc load/save model TF-IDF và transform văn bản thành vector.
+  - `qdrant_service.py`: Wrapper class để gọi các hàm của `qdrant-client` (search, upload).
+  - `ingestion_service.py`: Orchestrator, gọi các service khác để thực hiện luồng ETL đầy đủ.
+- **`utils/`**: Các hàm hỗ trợ đọc file, xử lý chuỗi đơn giản.
 
-### `app/core/` - Core Configuration
+### 2. `assets/` (Static Resources)
+Nơi chứa dữ liệu thô. Trong môi trường production, folder này có thể được mount từ bên ngoài vào container.
 
-- **config.py**: Settings (Qdrant URL, ports, etc.)
-- **dependencies.py**: Shared dependencies cho FastAPI
+### 3. `models/` (Artifacts)
+Nơi lưu trữ file model `.pkl` sau khi huấn luyện. Folder này cần được persist (lưu trữ lâu dài) hoặc tạo lại mỗi khi chạy Ingestion.
 
-### `app/models/` - Data Models
+### 4. `scripts/`
+Chứa các script tiện ích, ví dụ `initial_ingest.py` có thể được gọi khi container khởi động để nạp dữ liệu tự động mà không cần gọi API.
 
-- **request.py**: SearchRequest, IngestRequest
-- **response.py**: SearchResponse, IngestResponse
-
-### `app/services/` - Business Logic
-
-- **nlp_processor.py**: Tokenize, lowercase, remove stopwords
-- **tfidf_service.py**: Train/load TF-IDF model, transform text
-- **qdrant_service.py**: Connect, create collection, upsert, search
-- **ingestion_service.py**: Load Excel → Process → Index to Qdrant
-
-### `app/utils/` - Utilities
-
-- **excel_loader.py**: Read Excel với pandas
-- **stopwords_loader.py**: Load danh sách stopwords
-
-### `models/` - ML Models
-
-- **tfidf_vectorizer.pkl**: TF-IDF model đã train
-
-### `tests/` - Testing
-
-- Unit tests cho từng module
+### 5. `tests/`
+Cấu trúc test tương ứng với cấu trúc code trong `app/` để dễ dàng viết Unit Test.
 
 ---
-
-**Ngày tạo**: 2026-02-16  
-**Phiên bản**: 0.1.0
+**Lưu ý:** Cấu trúc này đảm bảo tính "Separation of Concerns" (Tách biệt mối quan tâm), giúp code dễ đọc, dễ test và dễ mở rộng sau này.

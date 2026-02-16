@@ -83,6 +83,61 @@ services:
           memory: 1G
     restart: unless-stopped
 
+  irs_api:
+    build:
+      context: ../microservices/irs_api
+      dockerfile: Dockerfile
+    container_name: irs_api
+    hostname: irs_api
+    ports:
+      - "8000:8000" # API port
+    environment:
+      # Qdrant configuration
+      - QDRANT_HOST=qdrant
+      - QDRANT_PORT=6333
+      - QDRANT_COLLECTION_NAME=articles
+
+      # API configuration
+      - API_HOST=0.0.0.0
+      - API_PORT=8000
+      - API_RELOAD=false
+
+      # Data paths (inside container)
+      - EXCEL_ARTICLES_PATH=/app/assets/excel/articles.xlsx
+      - EXCEL_CATEGORIES_PATH=/app/assets/excel/categories.xlsx
+      - EXCEL_COMMENTS_PATH=/app/assets/excel/comments.xlsx
+      - STOPWORDS_PATH=/app/assets/vietnamese-stopwords.txt
+      - TFIDF_MODEL_PATH=/app/models/tfidf_vectorizer.pkl
+    volumes:
+      # Mount models directory for persistence
+      - ../microservices/irs_api/models:/app/models
+    networks:
+      - main-network
+    depends_on:
+      qdrant:
+        condition: service_healthy
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "python",
+          "-c",
+          "import requests; requests.get('http://localhost:8000/', timeout=5)",
+        ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s # Give time for model loading
+    deploy:
+      resources:
+        limits:
+          cpus: "2.0"
+          memory: 2G
+        reservations:
+          cpus: "1.0"
+          memory: 1G
+    restart: unless-stopped
+
 networks:
   main-network:
     external: true
