@@ -140,17 +140,17 @@ class QdrantService:
                 ]
             )
         
-        # Search
-        search_results = self.client.search(
+        # Query points using new API
+        search_results = self.client.query_points(
             collection_name=collection_name,
-            query_vector=query_vector.tolist(),
+            query=query_vector.tolist(),
             limit=limit,
             query_filter=query_filter
         )
         
         # Format results
         results = []
-        for hit in search_results:
+        for hit in search_results.points:
             result = {
                 "id": hit.id,
                 "score": hit.score,
@@ -172,7 +172,6 @@ class QdrantService:
         """
         info = self.client.get_collection(collection_name)
         return {
-            "vectors_count": info.vectors_count,
-            "points_count": info.points_count,
-            "status": info.status
+            "points_count": info.points_count if hasattr(info, 'points_count') else 0,
+            "status": info.status if hasattr(info, 'status') else "unknown"
         }

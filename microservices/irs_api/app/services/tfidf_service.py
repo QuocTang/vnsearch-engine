@@ -10,6 +10,14 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 import numpy as np
 
 
+def _identity_tokenizer(text: str) -> List[str]:
+    """
+    Identity tokenizer for pre-tokenized text.
+    Assumes text is already tokenized and space-separated.
+    """
+    return text.split()
+
+
 class TFIDFService:
     """
     TF-IDF vectorization service for text to vector transformation.
@@ -41,7 +49,8 @@ class TFIDFService:
             min_df=min_df,
             max_df=max_df,
             lowercase=False,  # Already lowercased in preprocessing
-tokenizer=lambda x: x.split()  # Already tokenized
+            tokenizer=_identity_tokenizer,  # Use named function instead of lambda
+            token_pattern=None  # Suppress warning when using custom tokenizer
         )
         
         self.vectorizer.fit(texts)
