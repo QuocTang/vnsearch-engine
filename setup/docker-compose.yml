@@ -106,7 +106,7 @@ services:
       - EXCEL_ARTICLES_PATH=/app/assets/excel/articles.xlsx
       - EXCEL_CATEGORIES_PATH=/app/assets/excel/categories.xlsx
       - EXCEL_COMMENTS_PATH=/app/assets/excel/comments.xlsx
-      - STOPWORDS_PATH=/app/assets/vietnamese-stopwords.txt
+      - STOPWORDS_PATH=/app/assets/txt/vietnamese-stopwords.txt
       - TFIDF_MODEL_PATH=/app/models/tfidf_vectorizer.pkl
     volumes:
       # Mount models directory for persistence
