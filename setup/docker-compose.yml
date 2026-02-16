@@ -113,9 +113,9 @@ services:
       - ../microservices/irs_api/models:/app/models
     networks:
       - main-network
-    depends_on:
-      qdrant:
-        condition: service_healthy
+    # depends_on:
+    #   qdrant:
+    #     condition: service_healthy
     healthcheck:
       test:
         [
