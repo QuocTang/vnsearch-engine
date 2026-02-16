@@ -23,12 +23,14 @@ features/new-module/
 Nơi định nghĩa API endpoints và các hằng số.
 
 ```typescript
+import { environment } from "@/core/environment";
+
 export const MODULE_NAME_APIS = {
-  query: "/api/v1/module-name/list",
-  detail: "/api/v1/module-name/detail",
-  create: "/api/v1/module-name",
-  update: "/api/v1/module-name",
-  delete: "/api/v1/module-name",
+  query: `${environment.API_BASE_URL}/api/v1/module-name/list`,
+  detail: `${environment.API_BASE_URL}/api/v1/module-name/detail`,
+  create: `${environment.API_BASE_URL}/api/v1/module-name`,
+  update: `${environment.API_BASE_URL}/api/v1/module-name`,
+  delete: `${environment.API_BASE_URL}/api/v1/module-name`,
 };
 
 export const MODULE_NAME_QUERY_KEYS = {
@@ -66,7 +68,7 @@ export interface ModuleNameDto {
 **Quy tắc**: Chỉ IO, không Logic, không Transform.
 
 ```typescript
-import { HttpClient } from "@/registry/http-regitry";
+import { HttpClient } from "@/core/http/http-client";
 import { MODULE_NAME_APIS } from "../config";
 import type { ModuleNameSearchCriteria } from "../types";
 
