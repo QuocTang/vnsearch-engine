@@ -1,7 +1,25 @@
 [project]
 name = "irs-api"
 version = "0.1.0"
-description = "Add your description here"
+description = "Information Retrieval System API for Vietnamese articles using Vector Space Model"
 readme = "README.md"
 requires-python = ">=3.12"
-dependencies = []
+dependencies = [
+    "fastapi>=0.109.0",
+    "uvicorn[standard]>=0.27.0",
+    "qdrant-client>=1.7.0",
+    "pandas>=2.1.0",
+    "numpy>=1.26.0",
+    "underthesea>=6.7.0",
+    "scikit-learn>=1.4.0",
+    "python-multipart>=0.0.6",
+    "openpyxl>=3.1.0",
+    "python-dotenv>=1.0.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.4.0",
+    "black>=23.0.0",
+    "ruff>=0.1.0",
+]
