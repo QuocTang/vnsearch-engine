@@ -24,7 +24,7 @@ export function ArticleCard({ article }: { article: ArticleModel }) {
       whileHover={{ y: -5 }}
       transition={{ type: "spring", stiffness: 300 }}
     >
-      <Card className="group relative overflow-hidden p-6 transition-all hover:shadow-lg">
+      <Card className="group relative overflow-hidden p-4 md:p-6 transition-all hover:shadow-lg">
         {/* Header: Category Badge + Score */}
         <div className="flex items-start justify-between mb-3">
           <Badge variant="outline" className={categoryColor}>
