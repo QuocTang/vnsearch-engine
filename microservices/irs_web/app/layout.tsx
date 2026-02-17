@@ -15,9 +15,52 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+import { environment } from "@/core/environment";
+
 export const metadata: Metadata = {
-  title: "IRS Search - Tìm kiếm bài viết tiếng Việt",
-  description: "Tìm kiếm semantic articles tiếng Việt với IRS Search Engine",
+  metadataBase: new URL(environment.APP_URL),
+  title: {
+    default: environment.APP_NAME,
+    template: `%s | ${environment.APP_NAME}`,
+  },
+  description:
+    "Hệ thống tìm kiếm bài viết tiếng Việt thông minh sử dụng công nghệ Semantic Search.",
+  keywords: ["Search Engine", "Semantic Search", "Vietnamese", "NLP", "AI"],
+  authors: [{ name: "IRS Team" }],
+  creator: "IRS Team",
+  openGraph: {
+    type: "website",
+    locale: "vi_VN",
+    url: environment.APP_URL,
+    title: environment.APP_NAME,
+    description: "Hệ thống tìm kiếm bài viết tiếng Việt thông minh.",
+    siteName: environment.APP_NAME,
+    images: [
+      {
+        url: "/og-image.png", // Next.js automatically looks for opengraph-image.png/jpg in app/
+        width: 1200,
+        height: 630,
+        alt: environment.APP_NAME,
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: environment.APP_NAME,
+    description: "Hệ thống tìm kiếm bài viết tiếng Việt thông minh.",
+    images: ["/og-image.png"],
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
+  },
 };
 
 export default function RootLayout({
