@@ -105,7 +105,9 @@ export function useSearchLogic() {
     isSearched,
     isLoading: searchMutation.isPending,
     isError: searchMutation.isError,
-    errorMessage: searchMutation.error?.message,
+    errorMessage:
+      (searchMutation.error as any)?.response?.data?.detail ||
+      searchMutation.error?.message,
     executionTime,
     totalResults,
 

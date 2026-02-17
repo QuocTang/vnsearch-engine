@@ -9,7 +9,7 @@ import { Canvas } from "@react-three/fiber";
 function StarField(props: any) {
   const ref = useRef<any>(null);
   const [sphere] = useState(() =>
-    random.inSphere(new Float32Array(5000), { radius: 1.5 }),
+    random.inSphere(new Float32Array(6000), { radius: 1.5 }),
   );
 
   useFrame((state, delta) => {
