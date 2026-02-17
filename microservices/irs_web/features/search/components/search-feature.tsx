@@ -41,6 +41,7 @@ export function SearchFeature() {
             Tìm kiếm semantic cho bài viết tiếng Việt
           </p>
           <SearchBar
+            defaultValue={query}
             onSearch={handleSearch}
             isLoading={isLoading}
             history={history}

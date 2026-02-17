@@ -32,6 +32,11 @@ export function SearchBar({
   const [isFocused, setIsFocused] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
 
+  // Sync internal state with defaultValue prop (e.g. from URL)
+  useEffect(() => {
+    setQuery(defaultValue);
+  }, [defaultValue]);
+
   const charCount = query.length;
   const maxChars = 500;
   const isValid = charCount >= 1 && charCount <= maxChars;
