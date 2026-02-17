@@ -17,6 +17,8 @@ export { ArticleModel } from "./models/article.model";
 // Config & Constants
 export {
   CATEGORIES,
+  CATEGORY_COLORS,
+  DEFAULT_CATEGORY_COLOR,
   SEARCH_CONFIG,
   UI_CONFIG,
   SEARCH_QUERY_KEYS,

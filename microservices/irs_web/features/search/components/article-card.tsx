@@ -2,31 +2,22 @@ import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
-import { ArticleModel } from "../models/article.model";
+import {
+  CATEGORY_COLORS,
+  DEFAULT_CATEGORY_COLOR,
+} from "@/features/search/config";
+import type { ArticleModel } from "@/features/search/models/article.model";
 
 /**
  * Article Card Component
  * Hiển thị một article result v với đầy đủ thông tin
  */
-interface ArticleCardProps {
-  article: ArticleModel;
-}
 
-// Category colors mapping
-const CATEGORY_COLORS: Record<string, string> = {
-  "Khoa học": "bg-blue-500/10 text-blue-700 border-blue-200",
-  "Ý kiến": "bg-purple-500/10 text-purple-700 border-purple-200",
-  "Giáo dục": "bg-green-500/10 text-green-700 border-green-200",
-  "Sức khỏe": "bg-red-500/10 text-red-700 border-red-200",
-  "Thời sự": "bg-orange-500/10 text-orange-700 border-orange-200",
-  "Giải trí": "bg-pink-500/10 text-pink-700 border-pink-200",
-  "Đời sống": "bg-yellow-500/10 text-yellow-700 border-yellow-200",
-};
-
-export function ArticleCard({ article }: ArticleCardProps) {
+export function ArticleCard({ article }: { article: ArticleModel }) {
+  // Get color or default
   const categoryColor =
-    CATEGORY_COLORS[article.category] ||
-    "bg-gray-500/10 text-gray-700 border-gray-200";
+    CATEGORY_COLORS[article.category as keyof typeof CATEGORY_COLORS] ||
+    DEFAULT_CATEGORY_COLOR;
 
   return (
     <motion.div
