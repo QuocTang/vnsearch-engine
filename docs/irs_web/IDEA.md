@@ -304,6 +304,7 @@ Desktop: > 1024px (3 columns hoặc wide list)
 - React Query (caching)
 - Zustand
 - React Hook Form
+- Usehooks-ts (React hooks)
 ```
 
 ---

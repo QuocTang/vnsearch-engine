@@ -24,7 +24,7 @@ export const CATEGORIES: CategoryName[] = [
 // API Endpoints
 // ============================================
 
-export const SEARCH_APIS = {
+export const API_ENDPOINTS = {
   search: `${environment.API_BASE_URL}/api/v1/search`,
   health: `${environment.API_BASE_URL}/`,
 } as const;

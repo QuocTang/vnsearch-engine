@@ -35,5 +35,10 @@ export { LoadingState } from "./components/loading-state";
 export { EmptyState } from "./components/empty-state";
 export { ErrorState } from "./components/error-state";
 
-// Hooks (sẽ export sau khi tạo)
+// Main Component
+export { SearchFeature } from "./components/search-feature";
+
+// Hooks
+export * from "./hooks/use-search-logic";
+export * from "./hooks/use-filters";
 // export { useSearch } from "./hooks/use-search";
