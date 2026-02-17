@@ -2,8 +2,10 @@
 
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { X, Search, Loader2 } from "lucide-react";
+import { HistoryList } from "./history-list";
+import { useOnClickOutside } from "usehooks-ts";
 
 /**
  * Search Bar Component
@@ -13,39 +15,61 @@ interface SearchBarProps {
   onSearch: (query: string) => void;
   isLoading?: boolean;
   defaultValue?: string;
+  history?: { query: string; timestamp: number }[];
+  onClearHistory?: () => void;
+  onRemoveHistoryItem?: (query: string) => void;
 }
 
 export function SearchBar({
   onSearch,
   isLoading = false,
   defaultValue = "",
+  history = [],
+  onClearHistory,
+  onRemoveHistoryItem,
 }: SearchBarProps) {
   const [query, setQuery] = useState(defaultValue);
+  const [isFocused, setIsFocused] = useState(false);
+  const containerRef = useRef<HTMLDivElement>(null);
+
   const charCount = query.length;
   const maxChars = 500;
   const isValid = charCount >= 1 && charCount <= maxChars;
+
+  useOnClickOutside(containerRef as React.RefObject<HTMLElement>, () =>
+    setIsFocused(false),
+  );
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (isValid && !isLoading) {
       onSearch(query.trim());
+      setIsFocused(false);
     }
   };
 
   const handleClear = () => {
     setQuery("");
+    setIsFocused(true);
+  };
+
+  const handleHistorySelect = (selectedQuery: string) => {
+    setQuery(selectedQuery);
+    onSearch(selectedQuery);
+    setIsFocused(false);
   };
 
   return (
-    <form onSubmit={handleSubmit} className="w-full max-w-3xl mx-auto">
-      <div className="relative">
+    <div ref={containerRef} className="w-full max-w-3xl mx-auto relative">
+      <form onSubmit={handleSubmit} className="relative z-20">
         <div className="relative">
           <Input
             type="text"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
+            onFocus={() => setIsFocused(true)}
             placeholder="Tìm kiếm bài viết..."
-            className="h-14 pr-24 text-lg"
+            className="h-14 pr-24 text-lg bg-background"
             disabled={isLoading}
           />
 
@@ -76,27 +100,35 @@ export function SearchBar({
             )}
           </Button>
         </div>
+      </form>
 
-        {/* Character Counter */}
-        <div className="flex items-center justify-between mt-2 px-1">
-          <div className="text-sm text-muted-foreground">
-            {!isValid && charCount > 0 && (
-              <span className="text-destructive">
-                {charCount < 1 ? "Nhập ít nhất 1 ký tự" : "Vượt quá 500 ký tự"}
-              </span>
-            )}
-          </div>
-          <div
-            className={`text-sm ${
-              charCount > maxChars
-                ? "text-destructive"
-                : "text-muted-foreground"
-            }`}
-          >
-            {charCount}/{maxChars}
-          </div>
+      {/* History Dropdown */}
+      {isFocused && history.length > 0 && !query && (
+        <HistoryList
+          history={history}
+          onSelect={handleHistorySelect}
+          onDelete={(q) => onRemoveHistoryItem?.(q)}
+          onClear={() => onClearHistory?.()}
+        />
+      )}
+
+      {/* Character Counter */}
+      <div className="flex items-center justify-between mt-2 px-1">
+        <div className="text-sm text-muted-foreground">
+          {!isValid && charCount > 0 && (
+            <span className="text-destructive">
+              {charCount < 1 ? "Nhập ít nhất 1 ký tự" : "Vượt quá 500 ký tự"}
+            </span>
+          )}
+        </div>
+        <div
+          className={`text-sm ${
+            charCount > maxChars ? "text-destructive" : "text-muted-foreground"
+          }`}
+        >
+          {charCount}/{maxChars}
         </div>
       </div>
-    </form>
+    </div>
   );
 }

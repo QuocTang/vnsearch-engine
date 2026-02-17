@@ -24,6 +24,11 @@ export function SearchFeature() {
     handleLimitChange,
     handleClearFilters,
     handleRetry,
+
+    // History
+    history,
+    handleRemoveHistory,
+    handleClearHistory,
   } = useSearchLogic();
 
   return (
@@ -35,7 +40,13 @@ export function SearchFeature() {
           <p className="text-lg text-muted-foreground mb-8">
             Tìm kiếm semantic cho bài viết tiếng Việt
           </p>
-          <SearchBar onSearch={handleSearch} isLoading={isLoading} />
+          <SearchBar
+            onSearch={handleSearch}
+            isLoading={isLoading}
+            history={history}
+            onClearHistory={handleClearHistory}
+            onRemoveHistoryItem={handleRemoveHistory}
+          />
         </div>
       </section>
 

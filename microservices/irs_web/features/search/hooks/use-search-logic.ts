@@ -3,6 +3,7 @@ import { useSearchParams, useRouter } from "next/navigation";
 import { useDebounceValue } from "usehooks-ts";
 import { useSearchMutation } from "./use-search";
 import { useFilters } from "./use-filters";
+import { useSearchStore } from "@/store/search-store";
 import { ArticleModel } from "../models/article.model";
 import type { CategoryName } from "../types";
 
@@ -17,6 +18,10 @@ export function useSearchLogic() {
 
   // Filters hook
   const { category, limit, setCategory, setLimit, clearFilters } = useFilters();
+
+  // History hook
+  const { history, addToHistory, removeFromHistory, clearHistory } =
+    useSearchStore();
 
   // Debounce query to avoid spamming API
   const [debouncedQuery] = useDebounceValue(query, 300);
@@ -50,6 +55,9 @@ export function useSearchLogic() {
       setResults(models);
       setExecutionTime(data.execution_time_ms);
       setTotalResults(data.total_results);
+
+      // Add to history
+      addToHistory(searchQuery);
     } catch (error) {
       console.error("Search failed:", error);
       setResults([]);
@@ -111,5 +119,10 @@ export function useSearchLogic() {
     handleLimitChange: setLimit,
     handleClearFilters: clearFilters,
     handleRetry,
+
+    // History
+    history,
+    handleRemoveHistory: removeFromHistory,
+    handleClearHistory: clearHistory,
   };
 }

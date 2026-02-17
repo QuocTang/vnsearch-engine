@@ -21,6 +21,7 @@ interface SearchStoreState {
   // History
   history: SearchHistoryItem[];
   addToHistory: (query: string) => void;
+  removeFromHistory: (query: string) => void;
   clearHistory: () => void;
 
   // Filters
@@ -43,13 +44,18 @@ export const useSearchStore = create<SearchStoreState>()(
       addToHistory: (query) => {
         const trimmed = query.trim();
         if (!trimmed) return;
-        const { history } = get();
-        const filtered = history.filter((item) => item.query !== trimmed);
+        const state = get();
+        const filtered = state.history.filter((item) => item.query !== trimmed);
         const newHistory = [
           { query: trimmed, timestamp: Date.now() },
           ...filtered,
         ].slice(0, MAX_HISTORY);
         set({ history: newHistory });
+      },
+      removeFromHistory: (query) => {
+        set((state) => ({
+          history: state.history.filter((item) => item.query !== query),
+        }));
       },
       clearHistory: () => set({ history: [] }),
 
