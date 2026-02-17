@@ -1,7 +1,7 @@
 export function Footer() {
   return (
     <footer className="border-t">
-      <div className="container flex h-16 items-center justify-between py-4">
+      <div className="container mx-auto flex h-16 items-center justify-between py-4">
         <p className="text-sm text-muted-foreground">
           © 2026 IRS Search. Powered by FastAPI + Qdrant
         </p>
