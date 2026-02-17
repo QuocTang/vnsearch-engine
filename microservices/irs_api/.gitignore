@@ -9,11 +9,11 @@ __pycache__/
 .venv/
 venv/
 ENV/
-env/
 
 # Environment Variables
-.env
-.env.local
+# .env
+# .env.local
+# .env.production
 
 # Models
 models/*.pkl
