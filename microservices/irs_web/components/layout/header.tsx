@@ -1,3 +1,5 @@
+import { ThemeToggle } from "./theme-toggle";
+
 export function Header() {
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
@@ -7,6 +9,7 @@ export function Header() {
         </div>
 
         <div className="flex items-center gap-4">
+          <ThemeToggle />
           {/* API Status Indicator */}
           <div className="flex items-center gap-2 text-sm">
             <div className="h-2 w-2 rounded-full bg-green-500" />

@@ -8,6 +8,7 @@ import {
   ResultsHeader,
   ArticleModel,
 } from "@/features/search";
+import { HeroBackground } from "@/components/three/hero-background";
 import type { CategoryName } from "@/features/search";
 
 /**
@@ -85,12 +86,16 @@ export default function Home() {
   return (
     <div className="container py-8">
       {/* Hero Section với Search Bar */}
-      <section className="py-12 text-center">
-        <h1 className="text-4xl font-bold mb-4">IRS Search</h1>
-        <p className="text-lg text-muted-foreground mb-8">
-          Tìm kiếm semantic cho bài viết tiếng Việt
-        </p>
-        <SearchBar onSearch={handleSearch} isLoading={false} />
+      {/* Hero Section với Search Bar */}
+      <section className="relative py-12 text-center">
+        <HeroBackground />
+        <div className="relative z-10">
+          <h1 className="text-4xl font-bold mb-4">IRS Search</h1>
+          <p className="text-lg text-muted-foreground mb-8">
+            Tìm kiếm semantic cho bài viết tiếng Việt
+          </p>
+          <SearchBar onSearch={handleSearch} isLoading={false} />
+        </div>
       </section>
 
       {/* Results Section */}
