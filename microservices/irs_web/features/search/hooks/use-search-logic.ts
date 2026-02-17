@@ -59,12 +59,17 @@ export function useSearchLogic() {
   // Sync URL with query
   useEffect(() => {
     const params = new URLSearchParams(searchParams.toString());
-    if (debouncedQuery) {
-      params.set("q", debouncedQuery);
-    } else {
-      params.delete("q");
+    const currentQ = params.get("q") || "";
+
+    // Only update URL if query has changed
+    if (debouncedQuery !== currentQ) {
+      if (debouncedQuery) {
+        params.set("q", debouncedQuery);
+      } else {
+        params.delete("q");
+      }
+      router.replace(`?${params.toString()}`, { scroll: false });
     }
-    router.replace(`?${params.toString()}`, { scroll: false });
   }, [debouncedQuery, router, searchParams]);
 
   // Trigger search when debounced query or filters change
