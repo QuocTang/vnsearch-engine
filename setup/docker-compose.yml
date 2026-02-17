@@ -138,6 +138,24 @@ services:
           memory: 1G
     restart: unless-stopped
 
+  irs_web:
+    build:
+      context: ../microservices/irs_web
+      dockerfile: Dockerfile
+    container_name: irs_web
+    hostname: irs_web
+    ports:
+      - "3000:3000"
+    environment:
+      - NEXT_PUBLIC_API_BASE_URL=http://localhost:8000 # Client-side uses localhost
+      - NEXT_PUBLIC_APP_NAME="IRS Search"
+      - NEXT_PUBLIC_APP_URL="http://localhost:3000"
+    networks:
+      - main-network
+    # depends_on:
+    #   - irs_api
+    restart: unless-stopped
+
 networks:
   main-network:
     external: true
