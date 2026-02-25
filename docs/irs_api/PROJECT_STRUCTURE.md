@@ -10,7 +10,7 @@ irs_api/
 │   │   ├── __init__.py
 │   │   └── v1/                 # API Version 1
 │   │       ├── __init__.py
-│   │       ├── dependencies.py # Các dependency injection (nếu có)
+│   │       ├── dependencies.py # Các dependency injection
 │   │       ├── health.py       # API Health check
 │   │       ├── ingest.py       # API Trigger Ingestion
 │   │       └── search.py       # API Search
@@ -38,21 +38,19 @@ irs_api/
 │   │   └── comments.xlsx
 │   └── txt/                    # Chứa file text phụ trợ
 │       └── vietnamese-stopwords.txt
-├── docker/                     # Cấu hình Docker (nếu cần tách biệt)
 ├── models/                     # Thư mục chứa Model đã huấn luyện (Artifacts)
+│   ├── .gitkeep               # Giữ thư mục trong git
 │   └── tfidf_vectorizer.pkl    # Model TF-IDF được serialize
 ├── scripts/                    # Các script chạy rời (không qua API)
 │   └── initial_ingest.py       # Script chạy ingestion lần đầu
 ├── tests/                      # Unit Tests
-│   ├── __init__.py
-│   ├── test_api/
-│   ├── test_services/
-│   └── test_utils/
+│   └── __init__.py
 ├── .dockerignore
+├── .env                        # Environment variables (local)
+├── .env.example                # Environment variables template
 ├── .gitignore
 ├── Dockerfile                  # File build Docker image
 ├── main.py                     # Entry point của ứng dụng (chạy Uvicorn)
-├── PROJECT_STRUCTURE.md        # Tài liệu cấu trúc dự án (File này)
 ├── pyproject.toml              # Quản lý dependencies (Poetry/UV)
 ├── README.md                   # Tài liệu hướng dẫn sử dụng
 └── uv.lock                     # File lock version của dependencies
