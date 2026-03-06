@@ -23,8 +23,9 @@ export function ArticleCard({ article }: { article: ArticleModel }) {
     <motion.div
       whileHover={{ y: -5 }}
       transition={{ type: "spring", stiffness: 300 }}
+      className="h-full"
     >
-      <Card className="group relative overflow-hidden p-4 md:p-6 transition-all hover:shadow-lg">
+      <Card className="group relative overflow-hidden p-4 md:p-6 transition-all hover:shadow-lg h-full flex flex-col">
         {/* Header: Category Badge + Score */}
         <div className="flex items-start justify-between mb-3">
           <Badge variant="outline" className={categoryColor}>
@@ -41,12 +42,12 @@ export function ArticleCard({ article }: { article: ArticleModel }) {
         </h3>
 
         {/* Summary - max 3-4 lines */}
-        <p className="text-sm text-muted-foreground line-clamp-3 mb-4">
+        <p className="text-sm text-muted-foreground line-clamp-3 mb-4 flex-1">
           {article.summary}
         </p>
 
         {/* Footer: Comments + CTA */}
-        <div className="flex items-center justify-between pt-4 border-t">
+        <div className="flex items-center justify-between pt-4 border-t mt-auto">
           <div className="flex items-center gap-2 text-sm text-muted-foreground">
             <span>📝</span>
             <span>{article.commentText}</span>
