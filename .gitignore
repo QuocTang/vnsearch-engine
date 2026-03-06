@@ -65,3 +65,6 @@ logs/
 # Project specific
 setup/metadata/
 microservices/vnexpress_crawler/endpoints.txt
+
+# skills
+battle-skills/
