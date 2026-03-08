@@ -84,9 +84,7 @@ services:
     restart: unless-stopped
 
   irs_api:
-    build:
-      context: ../microservices/irs_api
-      dockerfile: Dockerfile
+    image: quoctang/vnsearch-irs_api:latest
     container_name: irs_api
     hostname: irs_api
     ports:
@@ -139,9 +137,7 @@ services:
     restart: unless-stopped
 
   irs_web:
-    build:
-      context: ../microservices/irs_web
-      dockerfile: Dockerfile
+    image: quoctang/vnsearch-irs_web:latest
     container_name: irs_web
     hostname: irs_web
     ports:
