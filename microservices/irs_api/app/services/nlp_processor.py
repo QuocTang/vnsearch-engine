@@ -42,12 +42,17 @@ class NLPProcessor:
         
         # Step 1: Tokenize Vietnamese text
         tokens = word_tokenize(text, format="text")
+
         
-        # Step 2: Split tokens and lowercase
-        words = tokens.lower().split()
+        # Step 2: Split tokens, lowercase, and normalize compound words
+        # Replace underscores (underthesea compound markers) with spaces so that
+        # "công_nghệ_thông_tin" (query) and "công_nghệ thông_tin" (document) produce
+        # the same individual tokens, avoiding tokenization inconsistency.
+        words = tokens.lower().replace('_', ' ').split()
         
         # Step 3: Remove stopwords
         filtered_words = [word for word in words if word not in self.stopwords]
+
         
         return " ".join(filtered_words)
     

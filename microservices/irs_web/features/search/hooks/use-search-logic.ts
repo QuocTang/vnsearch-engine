@@ -87,9 +87,12 @@ export function useSearchLogic() {
     }
   }, [debouncedQuery, limit, category]);
 
-  // Handle manual search (e.g. Enter key)
+  // Handle manual search (e.g. Enter key or button click)
   const handleSearch = (newQuery: string) => {
     setQuery(newQuery);
+    if (newQuery.trim()) {
+      performSearch(newQuery, limit, category);
+    }
   };
 
   const handleRetry = () => {

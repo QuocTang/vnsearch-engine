@@ -34,7 +34,7 @@ async def search_articles(
     try:
         # Step 1: Preprocess query with NLP
         processed_query = nlp_processor.preprocess(request.query)
-        
+
         if not processed_query or not processed_query.strip():
             raise HTTPException(
                 status_code=400,
@@ -49,7 +49,7 @@ async def search_articles(
             )
         
         query_vector = tfidf_service.transform([processed_query])[0]
-        
+
         # Step 3: Search in Qdrant
         qdrant = QdrantService(settings.qdrant_host, settings.qdrant_port)
         
